@@ -1,0 +1,33 @@
+<h1>Root path: <%= @root_path %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Filename</th>
+      <th>Size</th>
+      <th>Created</th>
+      <th>Last modified</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @directory.each do |entry| %>
+    <tr>
+      <td><a class="<%= File.file?("#{@path}#{entry}") ? 'file': 'directory' %>"
+        href="/<%= "#{@path}#{entry}" %>">
+        <%= entry %>
+      </a></td>
+      <% if File.exists?("#{@path}#{entry}") %>
+        <td>
+          <%= number_to_human_size File.size("#{@path}#{entry}") %>
+        </td>
+        <td>
+          <%= File.birthtime("#{@path}#{entry}").to_formatted_s(:short) %>
+        </td>
+        <td>
+          <%= File.mtime("#{@path}#{entry}").to_formatted_s(:short) %>
+        </td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
